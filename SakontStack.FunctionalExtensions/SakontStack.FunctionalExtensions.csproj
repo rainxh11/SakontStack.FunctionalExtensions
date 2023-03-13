@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>10.0</LangVersion>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<PackageLicenseFile></PackageLicenseFile>
+		<OutputType>Library</OutputType>
+		<Version>1.0.0</Version>
+		<StartupObject />
+		<Authors>Chakhoum Ahmed (github.com/rainxh11)</Authors>
+		<Description>Extension Methods for C# Objects, Collections, Task...etc, that makes working with C# more Functional Oriented</Description>
+		<Copyright>© 2023 Chakhoum Ahmed</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/rainxh11/SakontStack.FunctionalExtensions</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/rainxh11/SakontStack.FunctionalExtensions</RepositoryUrl>
+		<RepositoryType>github</RepositoryType>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageTags>functional;func;extensions</PackageTags>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+		<ItemGroup>
+			<BuildOutputInPackage
+				Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+		</ItemGroup>
+	</Target>
+</Project>

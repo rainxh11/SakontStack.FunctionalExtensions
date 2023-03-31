@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -240,6 +241,42 @@ public static class FunctionalExtensions
     {
         await mutationAction.Invoke(value);
         return value;
+    }
+
+    public static string NameOf<T, TProperty>(this T value, Expression<Func<T, TProperty>> propertySelector)
+    {
+        if (propertySelector.Body is not MemberExpression expression)
+            throw new ArgumentException("Expression is not a property.");
+
+        return expression.Member.Name;
+    }
+
+    private static string GetNameFromMemberExpression(Expression expression)
+    {
+        return expression switch
+        {
+            MemberExpression memberExpression => memberExpression.Member.Name,
+            UnaryExpression unaryExpression   => GetNameFromMemberExpression(unaryExpression.Operand),
+            _                                 => throw new ArgumentException()
+        };
+    }
+
+    public static Type[] GetEventParamTypes<T, TEvent>(this T value,
+                                                       Expression<Func<T, TEvent>> eventSelector)
+        where TEvent : Delegate
+    {
+        var delegateType = typeof(TEvent).GetEvent(value.NameOf(eventSelector)).EventHandlerType;
+        var invoke       = delegateType.GetMethod("Invoke");
+        var pars         = invoke?.GetParameters();
+        return pars?.Select(x => x.ParameterType).ToArray();
+    }
+
+    public static string RemoveStrings(this string value, params string[] patterns)
+    {
+        return patterns
+              .Where(string.IsNullOrWhiteSpace)
+              .Distinct()
+              .PipelineWith(x => value.Replace(x, string.Empty));
     }
 }
 

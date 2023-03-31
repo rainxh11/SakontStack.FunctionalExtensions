@@ -6,7 +6,7 @@
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseFile></PackageLicenseFile>
 		<OutputType>Library</OutputType>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<StartupObject />
 		<Authors>Chakhoum Ahmed (github.com/rainxh11)</Authors>
 		<Description>Extension Methods for C# Objects, Collections, Task...etc, that makes working with C# more Functional Oriented</Description>
